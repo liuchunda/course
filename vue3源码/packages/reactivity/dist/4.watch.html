@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="app"></div>
+  <script type="module">
+    // import { reactive, effect, watch, watchEffect } from '../../../node_modules/@vue/runtime-dom/dist/runtime-dom.esm-browser.js'
+    import { reactive, effect,watch ,watchEffect} from './reactivity.js'
+    // console.log(watch,16)
+    const state = reactive({ name: 'lcd', age: 10 })
+    // 对象是无法监控到前后值的更改
+    // watch 默认是异步的
+    // watch(()=>state.name, (newVal, oldVal) => {
+    //   app.innerHTML = state.name
+    //   console.log('数据变化了', newVal, oldVal, 12)
+    // }, {
+    //   flush: 'sync'
+    // })
+    // state.name = 123
+    // state.name = 456
+
+    // console.log('数据变化next')
+
+
+    // watchEffect(() => {
+    //   //自动收集依赖
+    //   console.log(222)
+    //   app.innerHTML = state.name
+    // },{flush:'sync'})
+    // setTimeout(() => {
+    //   console.log(111)
+    //   state.name = 123
+    //   console.log(333)
+    // }, 1000) 
+
+
+    // watch 大部分场景可能是，监控数据变化，变化后发送请求，
+    // 模拟一个输入框的场景，百度搜索框
+    // 1.当用户输入1的时候，1s后才返回
+    // 2.发送请求，1s后返回
+    // 以最终结果1为准，实际应该以2的结果
+    let timer = 4000;
+    function getData (data) {
+      return new Promise((resove, reject) => {
+        setTimeout(() => {
+          resove(data)
+        }, timer -= 1000)
+      })
+    }
+
+
+    // let fn;//用于存储上一次的清理操作
+    // 闭包，定义函数的作用域，和执行函数的作用域不是同一个
+    // watch(() => state.age, async function (newVal, oldVal) {
+    //   fn && fn()
+    //   let flag = true
+    //   fn = function () {
+    //     // 取消操作 1）取消请求，2）清理 3）屏蔽
+    //     flag = false
+    //   }
+    //   let r = await getData(newVal)
+    //   flag && (app.innerHTML = r)
+    // }, { flush: 'sync' })
+    // state.age = 1;
+    // state.age = 2;
+    // state.age = 3;
+
+
+
+    watch(() => state.age, async function (newVal, oldVal,onCleanUp) {
+      let flag = true
+      // vue3提供了这样的一个函数
+      onCleanUp(function(){
+        flag = false
+      })
+      let r = await getData(newVal)
+      flag && (app.innerHTML = r)
+    }, { flush: 'sync' })
+    state.age = 1;
+    state.age = 2;
+    state.age = 3;
+
+
+    // watch watch watchEffect cleanup
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  
+  <ul id="contaniner">
+
+
+  </ul>
+  <script>
+    let total = 100000;
+    let timer = Date.now()
+    // 新版本浏览器的优化，页面上有重回，浏览器检测到循环操作，会当js都执行完之后，一并插入到页面
+    for(let i=0;i<total;i++){
+    
+      let li = document.createElement('li')
+      li.innerHTML=i
+      contaniner.appendChild(li)
+    }
+    console.log( Date.now()-timer)
+    setTimeout(()=>{
+      console.log( Date.now()-timer)
+    },0)
+  </script>
+</body>
+</html>

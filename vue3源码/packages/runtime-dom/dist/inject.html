@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+
+
+/*
+跨级通信
+1.this.$parent.$parent 这种方法比较脆弱，如果父级改变了dom结构，就拿不到那个元素了
+
+2.reject provide 
+    在组件定义的时候，父 provides 子 可以拿到父级的 provides（因为渲染方式是先父后子） 孙子 可以拿到儿子的provides
+    所谓的继承，都是儿子继承父级的，不能父级继承子级的
+    如果儿子新增了一个属性，那么就在父亲的provides来创建一个新对象，这样不会影响父亲的provides
+    父 provides 子 （provides=父级的provides+自己） 孙子 可以拿到儿子的provides
+
+    vue2的实现，是每个组件都加一个provides属性，然后while循环，一直往上找，while(parent){ parent = parent$parent}
+
+  数据来源依旧不明确，不知道是来自父级的还是爷爷级的
+*/ 
+  </script>
+</body>
+</html>

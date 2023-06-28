@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="app"></div>
+  <script type="module">
+    // import { reactive, effect, watch, watchEffect,computed } from '../../../node_modules/@vue/runtime-dom/dist/runtime-dom.esm-browser.js'
+    import { reactive, effect, watch, watchEffect, computed } from './reactivity.js'
+    // console.log(watch,16)
+    const state = reactive({ firstname: 'a', lastname: 'b' })
+    // 计算属性默认是懒执行的，如果依赖的值不发生变化，不会重新执行，dirty 缓存
+    // 计算属性的值，自身无法修改
+    // 依赖的值变化了，后续再取值可以获取新的值
+    const fullname = computed({
+      get () {
+        console.log('getter')
+        return state.firstname + state.lastname
+      },
+      set (val) {
+        console.log(val, 26000)
+      }
+    })
+    // console.log(fullname[ReactiveFlags],30)
+    effect(()=>{
+      console.log('effect')
+      // console.log(fullname.value,33)
+      app.innerHTML = fullname.value
+    })
+
+    state.firstname ='aaa'
+    // fullname.value = 100
+
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="app"></div>
+  <script type="module">
+    // import { reactive, effect } from '../../../node_modules/@vue/reactivity/dist/reactivity.esm-browser.js'
+    import { reactive, effect } from '../dist/reactivity.js'
+    // 1)创建一个响应式对象 
+
+    let obj = { name: 1 }
+    const state = reactive(obj)
+    // 2）收集effect
+    state.date=10
+    effect(() => {//类似react的react+hook
+      app.innerHTML = `日期：${state.date || 0}`
+    })
+    setInterval(() => {
+      state.date = new Date()
+    }, 1000)
+    // console.log(ss())
+  </script>
+</body>
+
+</html>

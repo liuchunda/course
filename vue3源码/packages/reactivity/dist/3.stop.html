@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="app"></div>
+  <script type="module">
+    // import { reactive, effect } from '../../../node_modules/@vue/reactivity/dist/reactivity.esm-browser.js'
+    import { reactive, effect } from '../dist/reactivity.js'
+    const state = reactive({ name: 'lcd', age: 30, flag: true,addredd:{s:11} })
+    const runner = effect(() => {
+      console.log(state.addredd)
+      app.innerHTML = state.addredd.s
+    },{
+    //   scheduler:()=>{//watch fn
+    //   setTimeout(()=>{
+    //     // 组件的异步渲染
+    //     // console.log(1213213)
+    //     runner()  
+    //   },1000)
+    // }
+    })
+    // runner.effect.stop()//停止effect的响应能力，不在收集数据了
+    // console.log(runner, 20)
+
+    setTimeout(() => {
+      // state.name = 'liuchunda1'
+      // state.name = 'liuchunda2'
+
+      // console.log(state.name,26)
+      // a=100
+      // runner.effect.run()//forceUpdate
+      state.addredd.s=123
+    }, 1000)
+    // 返回的effect是一个run函数，run函数执行的话，回让this.run执行，会执行传入effect的函数
+  </script>
+</body>
+
+</html>

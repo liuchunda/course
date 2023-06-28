@@ -1,0 +1,20 @@
+{
+  "name": "vue3_source_code",
+  "private": true,
+  "version": "1.0.0",
+  "description": "vue3伪源码",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node scripts/dev.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "vue": "^3.2.47"
+  },
+  "devDependencies": {
+    "esbuild": "0.14.43"
+  }
+}
