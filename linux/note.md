@@ -456,7 +456,7 @@ shell是一个命令解释器，shell是解释执行的脚步语言，可以直�
   cd xxxx >error.txt 2>&1 把错误输出写到标准输出中
 
 # 输入重定向
-  wc <2.txt  统计指定文件中的行数，字数，字节数，并将统计结果显示到控制台
+  wc <2.txt  统计指定文件中 的行数，字数，字节数，并将统计结果显示到控制台
 
 # 管道符 
   # 多行命令执行符
@@ -577,9 +577,106 @@ shell是一个命令解释器，shell是解释执行的脚步语言，可以直�
   +取消变量的类型属性
   -a将变量声明为数组类型
   -i将变量声明为整数类型
-  -x将变量声明为环境变量
-  -r将变量声明为只读类型
+  -x将变量声明为环境变量  进入子变量 这个环境变量还能取到
+  -r将变量声明为只读类型  declare -r r=100; declare +r r 取消只读类型声明
   -p显示指定变量的被声明的类型
+
+  echo $names[*] 会打印出数组的所有项
+
+  declare -p 查询全部的
+  declare -p names可以查看变量类型
+
+  export NAME=zhufeng和 declare -x NAME=zhufeng 效果一样
+
+# 数值运算 expr表达式
+  num1=1
+  num2=2
+  expr $num1 + $num2
+  sum=$(expr $num1 + $num2) 加号两边一定要有空格
+  sum=$(($num1+$num2))
+
+# 文本处理命令
+## cut 提取文本中的某一部分
+  -f 指定提取的列
+  -d 分隔符
+  printf name:liuchunda:age:10|cut -d : -f 2,4=>  liuchunda:10
+
+## printf 按规定的格式输出
+%ns 输出字符串，n是数字代表输出几个字符
+%ni 输出整数，n是指输出几个数字
+%m.nf 输出浮点数，m和n是数字，指代输出的小数位数%6.2，2位小数，4位整数
+
+printf "%s %s %s %s %s " $(df -h|grep "/dev/disk1s2")
+=>/dev/disk1s2	466Gi	275Gi	176Gi	61%	2581280	1844888760	0%	/System/Volumes/Data
+
+printf "%s %s %s %s %s " $(df -h|grep "/dev/disk1s2")|cut -d " " -f 1,5=>/dev/disk1s2 61%
+
+## awk ‘条件1 {动作1}条件2{动作2}...’ 文件名
+df -h|grep /dev|awk '{print $1 $5}' 打印这些数据的弟一列和第五列，可以自动识别多个空格和制表符
+df -h|grep /dev|awk 'NR==3{print $1 $5}'只要弟3行
+#  awk 'BEGIN{print "开始"} END{print "结束"}' numbers.txt 
+会在读这个文件开始的时候执行begin里的语句，打印开始。在读完文件的时候，执行end中的结果，结束。
+#  awk 'BEGIN{print "开始"} {print $1} END{print "结束"}' numbers.txt 在上个基础上，打印每一行的输出
+
+#  awk 'BEGIN{sum=0} {sum+=$1} END{print sum}' numbers.txt 行累加
+
+## fs 字段分割符
+# awk '{print $1}' '/etc/passwd' wak默认的字段分隔符是一个或多个空格
+# awk 'BEGIN{FS=":"} {print $1}' '/etc/passwd' wak默认的字段分隔符是一个或多个空格,在开始之前指定分割符是:
+# 多条件
+awk '$2>90{print $1 "优秀"}$2<80{print $1 "良好"}' source.txt
+awk '$2>=90{print $1 "优秀"}($2>=60 && $2<90){print $1 "良好"}' source.txt 
+awk 'BEGINX{OFS=":"} $2>=90{print $1 "优秀"}($2>=60 && $2<90){print $1 "良好"}'  source.txt 
+
+## ofs 输出的分隔符
+
+## sed 是一个轻量级的编辑器
+sed 【选项】【‘动作’】文件名
+所有动作必须用单引号括起来
+类似批量的vi编辑器
+-n 只打印符合条件的。默认是都打印，符合条件的会打印两遍
+-e 
+-i 正常修改完是在屏幕输出，加i直接修改文件
+
+a追加
+c替换
+s替换字符串
+
+## 流程控制
+# 条件判断
+-d文件是否存在并且是目录
+-e文件是否存在
+-f文件是否存在并且是普通文件
+-b文件是否存在并且是块设备文件
+-c文件是否存在并且是字符设备文件
+-L文件是否存在并且是链接文件
+-p文件是否存在并且是管道文件
+-s文件是否存在并且是否为空
+-S文件是否存在并且是套接字文件
+
+test -e sourcse.txt
+[ -e 2.txt ]
+echo $? 判断上个命令的返回结果 0是rtue 1是false
+ [ -e 2.txt ] &&echo yes ||echo no
+
+## 权限判断
+-r读权限
+-w写权限
+-x执行权限
+[ -r read.txt ] && echo yes || echo no
+[ -x read.txt ] && echo yes || echo no
+
+## 两个文件比较
+文件1 -nt 文件2 判断文件1的修改时间是否比文件2新
+[ 1.txt -nt 111.txt ]&& echo yes || echo no
+
+# echo $- 代表当前shell的参数
+ 
+
+ # ps -ef |grep nginx 查看nginx是否启动
+ 
+ # curl http://localhost 去访问链接
+
 
 https://www.cnblogs.com/wcxia1985/p/16740397.html
 vi编辑器中:wq 、:wq!、:x、:q、:q!的详细区别
@@ -679,6 +776,14 @@ lcd               tty2                 18:23               34.00s          0.04s
 # du 查看文件目录大小
   -h 人性化显示
 
+# 脚本
+echo $RANDOM | md5sum | cut -c 1-8
+echo $RANDOM | cksum | cut -c 1-8
+
+echo -e "\033[5;31;42masd\033[0m"
+
+
+function creatuser
 
 userdel命令可以用于删除用户帐号及相关档案。
 语法：userdel [-r] 用户名
@@ -690,6 +795,7 @@ $ userdel -r zhidao
 
 # passwd 为当前用户修改密码
 # passwd user 为这个用户修改密码 只有root才能指定用户
+
 
 
 
