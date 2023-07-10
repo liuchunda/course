@@ -175,6 +175,64 @@ function each (root) {
   }
   let queue = [root]
   while (queue.length) {
+    const node = queue.shift()
+    console.log(node.val)
+    if (node.left) {
+      each(node.left)
+    }
+    if (node.right) {
+      each(node.right)
+    }
+  }
+}
+
+function each (root) {
+  if (!root) {
+    return
+  }
+  console.log(root.val)
+  if (root.left) {
+    each(root.left)
+  }
+  if (root.right) {
+    each(root.right)
+  }
+}
+
+function each (root) {
+  if (!root) {
+    return
+  }
+  if (root.left) {
+    each(root.left)
+  }
+  console.log(root.val)
+  if (root.right) {
+    each(root.right)
+  }
+}
+
+function each (root) {
+  if (!root) {
+    return
+  }
+  if (root.left) {
+    each(root.left)
+  }
+  if (root.right) {
+    each(root.right)
+  }
+  console.log(root.val)
+}
+
+
+
+function each (root) {
+  if (!root) {
+    return
+  }
+  let queue = [root]
+  while (queue.length) {
     let node = queue.shift()
     console.log(node.val)
     if (node.left) {
@@ -224,7 +282,7 @@ function each (root) {
   if (!root) { return }
   let queue = [root]
   // let result
-  while(queue.length){
+  while (queue.length) {
     let node = 
   }
 }
@@ -257,4 +315,59 @@ function each (root) {
     each(root.right)
   }
   console.log(root.val)
+}
+
+
+
+
+
+
+function quickSort (ary) {
+  if (ary.length < 2) {
+    return ary
+  }
+  let middleIndex = Math.floor(ary.length / 2)
+  let middleValue = ary.splice(middleIndex, 1)
+  let left = []
+  let right = []
+  ary.forEach((item) => item > middleValue ? right.push(item) : left.push(item))
+  return quickSort(left).concat(middleValue, quickSort(right))
+}
+
+function maxStr (str) {
+  if (str.length < 2) {
+    return str
+  }
+  let maxLen = 1
+  let start = 0
+  function compare (left, right) {
+    while (left >= 0 && right < str.length && (str[left] === str[right])) {
+      if (right - left + 1 > maxLen) {
+        maxLen = right - left + 1
+        start = left
+      }
+      left--
+      right++
+    }
+  }
+  for (let i = 0; i < str.length; i++) {
+    compare(i, i + 1)
+    compare(i - 1, i + 1)
+  }
+  return str.substring(start, start + maxLen)
+}
+
+
+function sort (ary) {
+  for (let i = 0; i < ary.length; i++) {
+    for (let j = ary.length - i-2; j >= i; j--) {
+      if (ary[j + 1] < ary[j]) {
+        let temp = ary[j]
+        ary[j] = ary[j + 1]
+        ary[j + 1] = temp
+      }
+    }
+    console.log(i,JSON.parse(JSON.stringify(ary)))
+  }
+  return ary
 }
